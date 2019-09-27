@@ -11,6 +11,12 @@ import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { ConfigurationService } from './services/configuration.service';
 
+const appInitializerFn = (appConfig: ConfigurationService) => {
+  return () => {
+    return appConfig.loadConfiguration();
+  };
+};
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -37,12 +43,12 @@ import { ConfigurationService } from './services/configuration.service';
       // Here we request that configuration loading be done at app-
       // initialization time (prior to rendering)
       provide: APP_INITIALIZER,
-      useFactory: (configService: ConfigurationService) =>
-        () => configService.loadConfigurationData(),
+      useFactory: appInitializerFn,
       deps: [ConfigurationService],
       multi: true //specify multi: true since there may be multiple APP_INITIALIZER functions registered.
     }
   ],
   bootstrap: [AppComponent]
 })
+
 export class AppModule { }

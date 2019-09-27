@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
-import { Configuration } from '../models/configuration';
+import { IServerConfiguration } from '../models/configuration';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
@@ -9,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
 export class ConfigurationService {
 
   private readonly configUrlPath: string = 'api/ClientConfiguration';
-  private configData: Configuration;
+  private configuration: IServerConfiguration;
 
   // Inject the http service and the app's BASE_URL
   constructor(
@@ -19,12 +19,11 @@ export class ConfigurationService {
   // Call the ClientConfiguration endpoint, deserialize the response,
   // and store it in this.configData.
   //https://stackoverflow.com/questions/47267221/fetch-response-json-and-response-status
-  loadConfigurationData(): Promise<Configuration>{
-    return this.http.get(`${this.originUrl}${this.configUrlPath}`)
+  loadConfiguration() {
+    return this.http.get<IServerConfiguration>(`${this.originUrl}${this.configUrlPath}`)
       .toPromise()
-      .then((response: Configuration) => {
-        this.configData = response;
-        return this.configData;
+      .then(result => {
+        this.configuration = <IServerConfiguration> (result);
       })
       .catch(err => {
         return Promise.reject(err);
@@ -32,8 +31,8 @@ export class ConfigurationService {
   }
 
   // A helper property to return the config object
-	get config(): Configuration {
-		return this.configData;
+	get config(): IServerConfiguration {
+		return this.configuration;
 	}
 
 }

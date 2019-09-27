@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 
 namespace ASPShareConfigureWithSPA.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
     public class ClientConfigurationController : ControllerBase
