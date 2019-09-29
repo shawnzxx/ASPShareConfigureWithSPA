@@ -10,6 +10,7 @@ import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { ConfigurationService } from './services/configuration.service';
+import { MsalService } from './services/msal.service';
 
 const appInitializerFn = (appConfig: ConfigurationService) => {
   return () => {
@@ -46,7 +47,8 @@ const appInitializerFn = (appConfig: ConfigurationService) => {
       useFactory: appInitializerFn,
       deps: [ConfigurationService],
       multi: true //specify multi: true since there may be multiple APP_INITIALIZER functions registered.
-    }
+    },
+    MsalService
   ],
   bootstrap: [AppComponent]
 })
